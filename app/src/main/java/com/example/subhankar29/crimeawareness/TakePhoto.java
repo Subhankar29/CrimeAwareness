@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,6 +16,7 @@ import java.util.Date;
 
 public class TakePhoto extends AppCompatActivity {
     Button time;
+    FirebaseDatabase ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
