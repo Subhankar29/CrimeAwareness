@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,9 +24,20 @@ public class TakePhoto extends AppCompatActivity {
     Button mcamera;
     ImageView mImageView;
     private Object Bitmap;
+    private Button postButton;
+    private TextView subjectText;
+    private TextView descText;
+
+
+    FirebaseDatabase ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        ref = FirebaseDatabase.getInstance();
+        subjectText = (TextView) findViewById(R.id.subject);
+        descText = (TextView) findViewById(R.id.description);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
         final TextView time  = (TextView) findViewById(R.id.time);
@@ -52,6 +65,23 @@ public class TakePhoto extends AppCompatActivity {
                 startActivityForResult(intent,0);
             }
         });
+
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PostDetails details = new PostDetails();
+                Location location = new Location();
+                location.setLatitude("0.0");
+                location.setLongitude("0.0");
+                details.setDesc("Dummy Description");
+                details.setSubject("Dummy Subject");
+                details.setLocation(location);
+                ref.getReference().getRoot().child("Posts").push().setValue(location);
+
+            }
+        });
+
+
 
     }
 
