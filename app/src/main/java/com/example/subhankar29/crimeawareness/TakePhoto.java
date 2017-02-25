@@ -95,7 +95,7 @@ public class TakePhoto extends AppCompatActivity {
 
             }
         });
-
+//
         /*location = (Button) findViewById(R.id.ButtonLocation);
         //location.setOnClickListener(new View.OnClickListener() {
             @Override
