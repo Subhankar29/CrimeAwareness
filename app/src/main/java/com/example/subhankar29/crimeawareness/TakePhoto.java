@@ -16,7 +16,11 @@ import java.util.Date;
 
 public class TakePhoto extends AppCompatActivity {
     Button time;
+
     FirebaseDatabase ref;
+    Button mcamera;
+    ImageView mImageView;
+    private Object Bitmap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
