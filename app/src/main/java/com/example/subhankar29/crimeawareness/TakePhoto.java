@@ -33,15 +33,15 @@ public class TakePhoto extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_take_photo);
+        final TextView time  = (TextView) findViewById(R.id.time);
 
         ref = FirebaseDatabase.getInstance();
         subjectText = (TextView) findViewById(R.id.subject);
         descText = (TextView) findViewById(R.id.description);
         postButton = (Button) findViewById(R.id.postButton);
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_take_photo);
-        final TextView time  = (TextView) findViewById(R.id.time);
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class TakePhoto extends AppCompatActivity {
                 details.setDesc("Dummy Description");
                 details.setSubject("Dummy Subject");
                 details.setLocation(location);
-                ref.getReference().getRoot().child("Posts").push().setValue(location);
+                ref.getReference().getRoot().child("Posts").push().setValue(details);
 
             }
         });
