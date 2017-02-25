@@ -10,4 +10,5 @@
         <item>Railways</item>
         <item>Water Resources</item>
     </string-array>
+    <string name="title_activity_map_fragment">Map</string>
 </resources>

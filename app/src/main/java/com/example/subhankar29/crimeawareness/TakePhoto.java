@@ -19,6 +19,8 @@ import android.Manifest;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -30,6 +32,7 @@ public class TakePhoto extends AppCompatActivity {
     private Button postButton;
     private TextView subjectText;
     private TextView descText;
+    Button location;
 
     private static final int APP_PERMS = 1097;
 
@@ -93,6 +96,14 @@ public class TakePhoto extends AppCompatActivity {
             }
         });
 
+        /*location = (Button) findViewById(R.id.ButtonLocation);
+        //location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapView.class);
+                startActivity(intent);
+            }
+        });*/
 
 
     }
