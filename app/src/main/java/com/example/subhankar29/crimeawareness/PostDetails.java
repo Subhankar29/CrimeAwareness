@@ -26,22 +26,22 @@ public class PostDetails {
 
     String desc;
 
-    public Location getLocation() {
+    public ULocation getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(ULocation location) {
         this.location = location;
     }
 
-    Location location;
+    ULocation location;
 
     public PostDetails(){} //For Firebase
 
 
 }
 
-class Location {
+class ULocation {
     public String getLongitude() {
         return longitude;
     }
@@ -62,5 +62,15 @@ class Location {
 
     String latitude;
 
-    public Location(){}
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+
+    String provider;
+
+    public ULocation(){}
 }

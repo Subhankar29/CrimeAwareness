@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.example.subhankar29.crimeawareness"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.subhankar29.crimeawareness">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -10,13 +16,19 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TakePhoto">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+
                 <uses-permission android:name="android.permission.CAMERA" />
                 <uses-permission android:name="android.permission.FLASHLIGHT" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".LocationService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -33,3 +33,10 @@ dependencies {
 
 
 apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'com.android.application'
+
+
+dependencies {
+    compile 'com.google.android.gms:play-services:10.0.1'
+}
