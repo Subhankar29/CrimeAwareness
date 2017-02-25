@@ -13,62 +13,12 @@
 
         <!--Put form controls here-->
 
-        <EditText
-            android:id="@+id/subject"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Subject of the of the Crime"
-            android:textSize="10pt">
-        </EditText>
 
-        <EditText
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Description of the of the Crime"
-            android:textSize="10pt">
-        </EditText>
-
-        <Button
-            android:id="@+id/ButtonCamera"
-            android:layout_height="wrap_content"
-            android:text="Camera"
-            android:onClick="sendFeedback"
-            android:layout_width="376dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="42dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp"
-            android:id="@+id/imageview"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:id="@+id/ButtonLocation"/>
-        <Spinner
-            android:id="@+id/static_spinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:entries="@array/Department_name"/>
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Time"
-            android:textSize="10pt">
-        </TextView>
-
-        <Button
-            android:id="@+id/postButton"
-            android:text="Post"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:text="Sign Up"
+            android:id="@+id/ButtonSignUp"/>
 
     </LinearLayout>
 </ScrollView>
