@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.subhankar29.crimeawareness">
+<manifest package="com.example.subhankar29.crimeawareness"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -33,12 +33,12 @@
 
         <activity android:name=".TakePhoto">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
 
-                <uses-permission android:name="android.permission.CAMERA" />
-                <uses-permission android:name="android.permission.FLASHLIGHT" />
+                <uses-permission android:name="android.permission.CAMERA"/>
+                <uses-permission android:name="android.permission.FLASHLIGHT"/>
             </intent-filter>
         </activity>
         <!--
@@ -64,12 +64,18 @@
         <service
             android:name=".LocationService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"></service>
+
+        <activity
+            android:name=".MapFragment"
+            android:label="@string/title_activity_map_fragment">
+        </activity>
 
         <activity
             android:name=".MainScreenActivity"
             android:label="@string/title_activity_main_screen"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>
