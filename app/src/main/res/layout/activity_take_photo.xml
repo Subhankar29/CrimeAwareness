@@ -63,7 +63,6 @@
             android:hint="Time"
             android:textSize="10pt">
         </TextView>
-
         <Button
             android:id="@+id/postButton"
             android:text="Post"
