@@ -49,6 +49,13 @@
             android:layout_height="wrap_content"
             android:text="Location"
             android:id="@+id/ButtonLocation"/>
+        <Spinner
+            android:id="@+id/static_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:entries="@array/Department_name"/>
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
