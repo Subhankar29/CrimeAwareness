@@ -3,6 +3,7 @@ package com.example.subhankar29.crimeawareness;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +17,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 
+
 public class TakePhoto extends AppCompatActivity {
-    Button time;
     Button mcamera;
     ImageView mImageView;
     private Object Bitmap;
@@ -30,15 +31,12 @@ public class TakePhoto extends AppCompatActivity {
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                //get current date time with Date()
-                Date date = new Date();
-                System.out.println(dateFormat.format(date));
 
-                //get current date time with Calendar()
-                Calendar cal = Calendar.getInstance();
-                System.out.println(dateFormat.format(cal.getTime()));
-                time.setText((CharSequence) cal.getTime());
+
+                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+// textView is the TextView view that should display it
+                time.setText(currentDateTimeString);
             }
 
 
@@ -63,6 +61,9 @@ public class TakePhoto extends AppCompatActivity {
         Bitmap bp = (Bitmap) data.getExtras().get("data");
         mImageView.setImageBitmap(bp);
     }
+
+
+
 
 
 }
