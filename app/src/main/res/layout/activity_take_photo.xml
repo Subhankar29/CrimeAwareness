@@ -58,7 +58,7 @@
         </TextView>
 
         <Button
-            android:id="@+id/PostButton"
+            android:id="@+id/postButton"
             android:text="Post"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

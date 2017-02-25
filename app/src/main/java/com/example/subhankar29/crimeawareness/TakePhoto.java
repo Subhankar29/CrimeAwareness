@@ -37,6 +37,7 @@ public class TakePhoto extends AppCompatActivity {
         ref = FirebaseDatabase.getInstance();
         subjectText = (TextView) findViewById(R.id.subject);
         descText = (TextView) findViewById(R.id.description);
+        postButton = (Button) findViewById(R.id.postButton);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
