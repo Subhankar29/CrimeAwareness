@@ -12,7 +12,7 @@
         android:layout_height="fill_parent">
 
         <!--Put form controls here-->
-
+//
         <TextView
             android:id="@+id/subject"
             android:layout_width="wrap_content"
