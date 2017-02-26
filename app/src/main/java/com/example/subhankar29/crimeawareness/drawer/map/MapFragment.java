@@ -1,6 +1,7 @@
 package com.example.subhankar29.crimeawareness.drawer.map;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -142,6 +144,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.addMarker(new MarkerOptions().position(bangalore).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bangalore));
 
+        CircleOptions circleOptions = new CircleOptions()
+                .center(bangalore)   //set center
+                .radius(500)   //set radius in meters
+                .fillColor(Color.RED)  //default
+                .strokeColor(Color.BLUE)
+                .strokeWidth(5);
+
+        mMap.addCircle(circleOptions);
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Posts");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -150,6 +161,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     PostDetails det =d.getValue(PostDetails.class);
                     Log.d("POST_DETAILS",det.getLocation().getLatitude()+" "+det.getLocation().getLongitude()+"\n");
                     Log.d("POST_DETAILS",d.getKey());
+
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(det.getLocation().getLatitude()),Double.parseDouble(det.getLocation().getLongitude()))));
 
 
                 }
