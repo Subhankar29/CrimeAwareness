@@ -4,10 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.subhankar29.crimeawareness.LocationService;
+import com.example.subhankar29.crimeawareness.PostDetails;
 import com.example.subhankar29.crimeawareness.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,6 +18,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -129,10 +138,29 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng bangalore = new LatLng(12.9716,77.5946);
+        // Add a marker in your location and move the camera
+        LatLng bangalore = new LatLng(LocationService.getUserLocation().getLatitude(),LocationService.getUserLocation().getLongitude());
         mMap.addMarker(new MarkerOptions().position(bangalore).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bangalore));
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Posts");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot d:dataSnapshot.getChildren()){
+                    PostDetails det =d.getValue(PostDetails.class);
+                    Log.d("POST_DETAILS",det.getLocation().getLatitude()+" "+det.getLocation().getLongitude()+"\n");
+                    Log.d("POST_DETAILS",d.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
     }
 
