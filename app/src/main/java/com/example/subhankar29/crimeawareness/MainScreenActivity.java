@@ -1,5 +1,6 @@
 package com.example.subhankar29.crimeawareness;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -106,6 +107,7 @@ public class MainScreenActivity extends FragmentActivity
             manager.beginTransaction().replace(R.id.content_main_screen,submitReportFragment).commit();
 
         } else if (id == R.id.nav_map) {
+//            startActivity(new Intent(MainScreenActivity.this,MapFragment.class));
             MapFragment mapFragment = new MapFragment();
             manager.beginTransaction().replace(R.id.content_main_screen,mapFragment).commit();
 
