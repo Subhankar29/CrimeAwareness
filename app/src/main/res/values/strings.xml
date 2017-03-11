@@ -3,12 +3,9 @@
     <string-array name="Department_name">
         <item>Choose Department</item>
         <item>Police Station</item>
-        <item>Road Transport</item>
         <item>Human Resource</item>
         <item>Municipal Corporation</item>
         <item>Minority Affair</item>
-        <item>Railways</item>
-        <item>Water Resources</item>
     </string-array>
     <string name="title_activity_map_fragment">Map</string>
     <string name="title_activity_main_screen">MainScreenActivity</string>

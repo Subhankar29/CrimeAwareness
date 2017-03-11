@@ -55,5 +55,8 @@ dependencies {
     compile 'com.android.support:support-v4:25.+'
 }
 dependencies {
+    compile 'com.android.support:support-v4:25.+'
+}
+dependencies {
     compile 'com.google.android.gms:play-services:10.0.1'
 }

@@ -28,8 +28,12 @@ public class TakePhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_photo);
 
+
         //Request Permissions (for Marshmallow onwards)
         requestPermissions();
+
+        Intent intent = new Intent(TakePhoto.this,MainScreenActivity.class);
+        startActivity(intent);
 
         signUp = (Button) findViewById(R.id.ButtonSignUp);
         signUp.setOnClickListener(new View.OnClickListener() {

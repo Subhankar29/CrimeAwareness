@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.subhankar29.crimeawareness.LocationService;
 import com.example.subhankar29.crimeawareness.PostDetails;
@@ -26,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Random;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -35,6 +39,8 @@ import com.google.firebase.database.ValueEventListener;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -45,6 +51,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -134,23 +142,39 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mListener = null;
     }
 
+    String wordToDisplay;
+
+    String wordList[] = new String[3];
+    Random r = new Random();
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
 
+
+        wordList[0]="ROBBERY";
+        wordList[1]="EVE TEASING";
+        wordList[2]="ASSAULT";
+        int rnd = new Random().nextInt(wordList.length);
+        wordToDisplay = wordList[rnd];
+
+
+
         // Add a marker in your location and move the camera
         LatLng bangalore = new LatLng(LocationService.getUserLocation().getLatitude(),LocationService.getUserLocation().getLongitude());
-        mMap.addMarker(new MarkerOptions().position(bangalore).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(bangalore).title("Crime Reported:" + wordToDisplay));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bangalore));
+
+
+
 
         CircleOptions circleOptions = new CircleOptions()
                 .center(bangalore)   //set center
                 .radius(500)   //set radius in meters
-                .fillColor(Color.RED)  //default
+                .fillColor(0x40ff0000)  //default
                 .strokeColor(Color.BLUE)
                 .strokeWidth(5);
-
         mMap.addCircle(circleOptions);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Posts");
@@ -162,7 +186,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Log.d("POST_DETAILS",det.getLocation().getLatitude()+" "+det.getLocation().getLongitude()+"\n");
                     Log.d("POST_DETAILS",d.getKey());
 
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(det.getLocation().getLatitude()),Double.parseDouble(det.getLocation().getLongitude()))));
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(det.getLocation().getLatitude()),Double.parseDouble(det.getLocation().getLongitude()))).title("Crime Reported:" + wordList[r.nextInt(3)]));
 
 
                 }
@@ -192,4 +216,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+
 }
