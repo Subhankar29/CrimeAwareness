@@ -2,6 +2,7 @@ package com.example.subhankar29.crimeawareness.drawer.map;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -47,6 +49,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String ARG_PARAM2 = "param2";
 
     private GoogleMap mMap;
+    private ArrayList<AreaList> alist;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,6 +61,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public MapFragment() {
         // Required empty public constructor
+        alist = new ArrayList<>();
     }
 
     /**
@@ -167,16 +171,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bangalore));
 
 
-
-
-        CircleOptions circleOptions = new CircleOptions()
-                .center(bangalore)   //set center
-                .radius(500)   //set radius in meters
-                .fillColor(0x40ff0000)  //default
-                .strokeColor(Color.BLUE)
-                .strokeWidth(5);
-        mMap.addCircle(circleOptions);
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Posts");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -188,8 +182,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(det.getLocation().getLatitude()),Double.parseDouble(det.getLocation().getLongitude()))).title("Crime Reported:" + wordList[r.nextInt(3)]));
 
+                    //Diagnose how classifier works
+                    Location l = new Location("gps");
+                    l.setLatitude(Double.parseDouble(det.getLocation().getLatitude()));
+                    l.setLongitude(Double.parseDouble(det.getLocation().getLongitude()));
+                    classifyLocation(l);
+
 
                 }
+                printclassifier();
+                markArea();
             }
 
             @Override
@@ -198,6 +200,57 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+    }
+
+
+    //This algorithm has not been tested for robustness. Please check for potential problems.
+    public void classifyLocation(Location l){
+        for(AreaList area:alist){
+            for(Location location:area.getMembers()){
+                //Don't add location to this area if distance is greater than 500m.
+                if(l.distanceTo(location)>500)continue;
+                //Add location to this area and return
+                area.getMembers().add(l);
+                return;
+            }
+        }
+        //At this point this location couldn't be classified in existing areas, so add new area and add location to this area.
+        AreaList e = new AreaList();
+        e.getMembers().add(l);
+        alist.add(e);
+    }
+
+    public void printclassifier(){
+        int i=0;
+        for(AreaList area:alist){
+            Log.d("CLASSIFIER","Area "+(++i));
+            for(Location location:area.getMembers()){
+                Log.d("CLASSIFIER","Location:"+location.getLatitude()+","+location.getLongitude());
+            }
+        }
+    }
+
+    public void markArea(){
+        for(AreaList area:alist){
+            float lat=0,lo=0;
+            int n=0;
+            for(Location location:area.getMembers()){
+                lat+=location.getLatitude();
+                lo+=location.getLongitude();
+                n++;
+            }
+
+            if(n<5)continue;
+            LatLng l = new LatLng(lat/n,lo/n);
+
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(l)   //set center
+                    .radius(500)   //set radius in meters
+                    .fillColor(0x40ff0000)  //default
+                    .strokeColor(Color.BLUE)
+                    .strokeWidth(5);
+            mMap.addCircle(circleOptions);
+        }
 
 
     }
