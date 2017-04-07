@@ -6,18 +6,44 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="250dp"
         card_view:cardCornerRadius="4dp">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:id="@+id/cardImage"/>
 
         <TextView
-            android:id="@+id/info_text"
+            android:id="@+id/subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Subject"
+            android:padding="10dp"
+            android:layout_below="@id/cardImage"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Time"
+            android:hint="Time"
+            android:layout_alignBaseline="@+id/subject"
+            android:layout_alignBottom="@+id/subject"
+            android:layout_toRightOf="@+id/subject"
+            android:layout_toEndOf="@+id/subject"/>
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"/>
+            android:id="@+id/description"
+            android:hint="Discription"
+            android:layout_below="@+id/subject"
+            android:padding="10dp"/>
 
+</RelativeLayout>
 
     </android.support.v7.widget.CardView>
 </LinearLayout>
