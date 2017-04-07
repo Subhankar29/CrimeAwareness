@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,10 +88,17 @@ public class ReportListFragment extends Fragment {
         rLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         reportListRecyclerView.setLayoutManager(rLayoutManager);
 
-        preparePostDetails();
 
+        postDetailsList = new ArrayList<>();
         rAdapter = new myCrimeAdapter(postDetailsList);
+
+
+
+
         reportListRecyclerView.setAdapter(rAdapter);
+
+
+        preparePostDetails();
 
 
 
@@ -100,10 +108,16 @@ public class ReportListFragment extends Fragment {
     }
 
     private void preparePostDetails() {
-        postDetailsList = new ArrayList<>();
+
         PostDetails e = new PostDetails();
         e.setSubject("Hello");
         postDetailsList.add(e);
+
+        rAdapter.notifyDataSetChanged();
+        Log.d("CARDVIEW","DONE.");
+        Log.d("CARDVIEW","DONE.");
+        Log.d("CARDVIEW","DONE.");
+        Log.d("CARDVIEW","DONE.");
     }
 
     // TODO: Rename method, update argument and hook method into UI event

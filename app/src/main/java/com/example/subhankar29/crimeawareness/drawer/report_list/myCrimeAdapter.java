@@ -2,6 +2,7 @@ package com.example.subhankar29.crimeawareness.drawer.report_list;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,11 +36,12 @@ public class myCrimeAdapter extends RecyclerView.Adapter<myCrimeAdapter.MyOwnHol
 
     public myCrimeAdapter(List<PostDetails> listPostDetails){
         postDetailsList  = listPostDetails;
+        if(listPostDetails == null) Log.d("CARDVIEW","NULL");
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return postDetailsList.size();
     }
 
     public class MyOwnHolder extends RecyclerView.ViewHolder {
