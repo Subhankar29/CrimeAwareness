@@ -4,12 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.subhankar29.crimeawareness.PostDetails;
 import com.example.subhankar29.crimeawareness.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +42,8 @@ public class ReportListFragment extends Fragment {
     private RecyclerView reportListRecyclerView;
     private RecyclerView.Adapter rAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
+
+    private List<PostDetails> postDetailsList;
 
     public ReportListFragment() {
         // Required empty public constructor
@@ -77,12 +84,26 @@ public class ReportListFragment extends Fragment {
         //Add views here using view.findViewByID()
         reportListRecyclerView = (RecyclerView) view.findViewById(R.id.report_list_recycler_view);
 
+        rLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        reportListRecyclerView.setLayoutManager(rLayoutManager);
+
+        preparePostDetails();
+
+        rAdapter = new myCrimeAdapter(postDetailsList);
+        reportListRecyclerView.setAdapter(rAdapter);
 
 
 
 
 
         return view;
+    }
+
+    private void preparePostDetails() {
+        postDetailsList = new ArrayList<>();
+        PostDetails e = new PostDetails();
+        e.setSubject("Hello");
+        postDetailsList.add(e);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
