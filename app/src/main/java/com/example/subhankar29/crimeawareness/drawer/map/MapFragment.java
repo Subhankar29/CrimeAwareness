@@ -168,7 +168,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Add a marker in your location and move the camera
         LatLng bangalore = new LatLng(LocationService.getUserLocation().getLatitude(),LocationService.getUserLocation().getLongitude());
         mMap.addMarker(new MarkerOptions().position(bangalore).title("Crime Reported:" + wordToDisplay));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(bangalore));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bangalore,(float)12.0));
+
 
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Posts");
