@@ -1,10 +1,7 @@
 package com.example.subhankar29.crimeawareness;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -12,22 +9,16 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.subhankar29.crimeawareness.drawer.map.MapFragment;
 import com.example.subhankar29.crimeawareness.drawer.report.SubmitReport;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.subhankar29.crimeawareness.drawer.report_list.ReportListFragment;
 
 public class MainScreenActivity extends FragmentActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SubmitReport.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SubmitReport.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener, ReportListFragment.OnFragmentInteractionListener {
 
     FragmentManager manager;
 
@@ -111,7 +102,9 @@ public class MainScreenActivity extends FragmentActivity
             MapFragment mapFragment = new MapFragment();
             manager.beginTransaction().replace(R.id.content_main_screen,mapFragment).commit();
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_report_list) {
+            ReportListFragment reportListFragment = new ReportListFragment();
+            manager.beginTransaction().replace(R.id.content_main_screen,reportListFragment).commit();
 
         } else if (id == R.id.nav_manage) {
 

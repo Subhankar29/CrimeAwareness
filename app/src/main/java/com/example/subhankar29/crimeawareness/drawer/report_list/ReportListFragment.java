@@ -1,6 +1,5 @@
 package com.example.subhankar29.crimeawareness.drawer.report_list;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +33,11 @@ public class ReportListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+
+    private RecyclerView reportListRecyclerView;
+    private RecyclerView.Adapter rAdapter;
+    private RecyclerView.LayoutManager rLayoutManager;
+
     public ReportListFragment() {
         // Required empty public constructor
     }
@@ -65,16 +69,13 @@ public class ReportListFragment extends Fragment {
         }
     }
 
-    protected RecyclerView r1;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_report_list, container, false);
         //Add views here using view.findViewByID()
-        r1 = (RecyclerView)  view.findViewById(R.id.reportRecycler);
-
+        reportListRecyclerView = (RecyclerView) view.findViewById(R.id.report_list_recycler_view);
 
 
 
