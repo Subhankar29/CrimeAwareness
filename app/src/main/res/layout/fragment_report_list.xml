@@ -5,9 +5,9 @@
              tools:context="com.example.subhankar29.crimeawareness.drawer.report_list.ReportListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/reportRecycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
