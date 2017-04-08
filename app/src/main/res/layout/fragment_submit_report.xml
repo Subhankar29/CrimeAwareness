@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,14 +7,14 @@
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="fill_parent"
-        android:orientation="vertical"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
         <!--Put form controls here-->
 
         <EditText
             android:id="@+id/subject"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Subject of the of the Crime"
             android:textSize="10pt">
@@ -22,7 +22,7 @@
 
         <EditText
             android:id="@+id/description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Description of the of the Crime"
             android:textSize="10pt">
@@ -30,24 +30,33 @@
 
         <Button
             android:id="@+id/ButtonCamera"
+            android:layout_width="376dp"
             android:layout_height="wrap_content"
-            android:text="Camera"
             android:onClick="sendFeedback"
-            android:layout_width="376dp" />
+            android:text="Camera"
+            android:gravity="center"/>
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/imageview"
+            android:layout_width="320dp"
+            android:layout_height="220dp"
             android:layout_marginBottom="42dp"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp"
-            android:id="@+id/imageview"/>
+            android:layout_marginTop="25dp"/>
+
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/ButtonLocation"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Location"
-            android:id="@+id/ButtonLocation"/>
+            android:bottomRightRadius="10dp"
+            android:bottomLeftRadius="100dp"
+            android:topLeftRadius="100dp"
+            android:topRightRadius="100dp"
+            android:layout_weight="1"/>
+
+
         <Spinner
             android:id="@+id/static_spinner"
             android:layout_width="fill_parent"
@@ -55,6 +64,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
             android:entries="@array/Department_name"/>
+
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
@@ -65,10 +75,12 @@
 
         <Button
             android:id="@+id/postButton"
-            android:text="Post"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Post"
+            android:background="@drawable/roundedbuttons"/>
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>
+

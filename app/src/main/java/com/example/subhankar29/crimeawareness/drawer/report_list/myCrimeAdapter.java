@@ -50,7 +50,7 @@ public class myCrimeAdapter extends RecyclerView.Adapter<myCrimeAdapter.MyOwnHol
         public MyOwnHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            subject = (TextView) cardView.findViewById(R.id.info_text);
+            //subject = (TextView) cardView.findViewById(R.id.info_text);
         }
     }
 }
