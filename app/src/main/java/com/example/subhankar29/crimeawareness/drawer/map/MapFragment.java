@@ -1,6 +1,7 @@
 package com.example.subhankar29.crimeawareness.drawer.map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
@@ -20,6 +21,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -164,13 +168,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         wordToDisplay = wordList[rnd];
 
 
-
         // Add a marker in your location and move the camera
         LatLng bangalore = new LatLng(LocationService.getUserLocation().getLatitude(),LocationService.getUserLocation().getLongitude());
         mMap.addMarker(new MarkerOptions().position(bangalore).title("Crime Reported:" + wordToDisplay));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bangalore,(float)12.0));
-
-
+       final String real = "R.drawable.shooting";
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Posts");
         ref.addValueEventListener(new ValueEventListener() {
@@ -180,8 +182,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     PostDetails det =d.getValue(PostDetails.class);
                     Log.d("POST_DETAILS",det.getLocation().getLatitude()+" "+det.getLocation().getLongitude()+"\n");
                     Log.d("POST_DETAILS",d.getKey());
-
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(det.getLocation().getLatitude()),Double.parseDouble(det.getLocation().getLongitude()))).title("Crime Reported:" + wordList[r.nextInt(3)]));
+                    BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.shooting);
+                    mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(det.getLocation().getLatitude()),Double.parseDouble(det.getLocation().getLongitude()))).title("Crime Reported:" + wordList[r.nextInt(3)]).icon(icon));
 
                     //Diagnose how classifier works
                     Location l = new Location("gps");

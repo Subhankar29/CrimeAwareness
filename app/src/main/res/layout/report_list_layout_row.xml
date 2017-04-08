@@ -10,7 +10,9 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        card_view:cardCornerRadius="4dp">
+        card_view:cardCornerRadius="4dp"
+        android:elevation="8dp"
+        android:layout_margin="5dp">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -25,24 +27,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Subject"
-            android:padding="10dp"
-            android:layout_below="@id/cardImage"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/Time"
-            android:hint="Time"
-            android:layout_alignBaseline="@id/subject"
-            android:layout_alignBottom="@id/subject"
-            android:layout_toRightOf="@id/subject"
-            android:layout_toEndOf="@id/subject"/>
+            android:layout_below="@id/cardImage"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="10dp"
+            android:textSize="18dp"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/description"
             android:hint="Description"
             android:layout_below="@id/subject"
-            android:padding="10dp"/>
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"/>
 
 </RelativeLayout>
 

@@ -1,6 +1,7 @@
 package com.example.subhankar29.crimeawareness.drawer.report;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -67,6 +68,7 @@ public class SubmitReport extends Fragment {
     private TextView subjectText;
     private TextView descText;
     Button location;
+    Button timeButton;
 
     private Uri mImageUri;
 
@@ -135,22 +137,38 @@ public class SubmitReport extends Fragment {
         subjectText = (EditText) getView().findViewById(R.id.subject);
         descText = (EditText) getView().findViewById(R.id.description);
         postButton = (Button) getView().findViewById(R.id.postButton);
+        location = (Button) getView().findViewById(R.id.ButtonLocation);
+        timeButton = (Button) getView().findViewById(R.id.ButtonTime);
+
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+                time.setText(currentDateTimeString);
+            }
+        });
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Location Send",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
-
-        time.setOnClickListener(new View.OnClickListener() {
+       /** time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-// textView is the TextView view that should display it
+            // textView is the TextView view that should display it
                 time.setText(currentDateTimeString);
             }
 
 
-        });
+        });**/
 
 
         mcamera = (Button) getView().findViewById(R.id.ButtonCamera);
@@ -193,10 +211,15 @@ public class SubmitReport extends Fragment {
                 DatabaseReference fRef= ref.getReference().getRoot().child("Posts").push();
                 fRef.setValue(details);
 
+                final ProgressDialog pd = new ProgressDialog(getActivity());
+                pd.setMessage("UPLOADING");
+                pd.show();
+
                 sRef.child("images/"+fRef.getKey()+"/picture.jpg").putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(getActivity(),"Image Uploaded",Toast.LENGTH_LONG).show();
+                        pd.dismiss();
+                        Toast.makeText(getActivity(),"Report Uploaded",Toast.LENGTH_LONG).show();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
