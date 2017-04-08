@@ -173,7 +173,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.addMarker(new MarkerOptions().position(bangalore).title("Crime Reported:" + wordToDisplay));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bangalore,(float)12.0));
        final String real = "R.drawable.shooting";
-
+//
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().getRoot().child("Posts");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
