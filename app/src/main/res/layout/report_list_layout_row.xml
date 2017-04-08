@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -13,7 +13,8 @@
         card_view:cardCornerRadius="4dp">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:id="@+id/cRelativeLayout">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="175dp"
@@ -31,16 +32,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/Time"
             android:hint="Time"
-            android:layout_alignBaseline="@+id/subject"
-            android:layout_alignBottom="@+id/subject"
-            android:layout_toRightOf="@+id/subject"
-            android:layout_toEndOf="@+id/subject"/>
+            android:layout_alignBaseline="@id/subject"
+            android:layout_alignBottom="@id/subject"
+            android:layout_toRightOf="@id/subject"
+            android:layout_toEndOf="@id/subject"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/description"
-            android:hint="Discription"
-            android:layout_below="@+id/subject"
+            android:hint="Description"
+            android:layout_below="@id/subject"
             android:padding="10dp"/>
 
 </RelativeLayout>

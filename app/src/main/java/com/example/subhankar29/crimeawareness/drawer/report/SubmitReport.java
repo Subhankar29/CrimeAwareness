@@ -1,16 +1,20 @@
 package com.example.subhankar29.crimeawareness.drawer.report;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +22,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.subhankar29.crimeawareness.LocationService;
 import com.example.subhankar29.crimeawareness.PostDetails;
 import com.example.subhankar29.crimeawareness.R;
 import com.example.subhankar29.crimeawareness.ULocation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -54,10 +68,14 @@ public class SubmitReport extends Fragment {
     private TextView descText;
     Button location;
 
+    private Uri mImageUri;
+
     private static final int APP_PERMS = 1097;
 
 
-    FirebaseDatabase ref;
+    private FirebaseDatabase ref;
+    private StorageReference sRef;
+    private FirebaseAuth fAuth;
 
     private OnFragmentInteractionListener mListener;
 
@@ -90,6 +108,11 @@ public class SubmitReport extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        //Should be handled in MainScreenActivity and not a fragment
+        fAuth= FirebaseAuth.getInstance();
+        if(fAuth.getCurrentUser()==null)signInAnonymously();
+        sRef = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -103,6 +126,7 @@ public class SubmitReport extends Fragment {
     public void onStart() {
         super.onStart();
 
+        //Should be handled in MainScreenActivity and not a fragment
         //Request Permissions (for Marshmallow onwards)
         requestPermissions();
 
@@ -135,6 +159,22 @@ public class SubmitReport extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File photo=null;
+                try
+                {
+                    // place where to store camera taken picture
+                    photo = SubmitReport.this.createTemporaryFile("picture", ".jpg");
+                    photo.delete();
+                }
+                catch(Exception e)
+                {
+                    Log.v("TEMPFILE", "Can't create file to take picture!");
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_LONG);
+
+                }
+                mImageUri = Uri.fromFile(photo);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
                 startActivityForResult(intent,0);
             }
         });
@@ -150,10 +190,54 @@ public class SubmitReport extends Fragment {
                 details.setDesc(descText.getText().toString());
                 details.setSubject(subjectText.getText().toString());
                 details.setLocation(location);
-                ref.getReference().getRoot().child("Posts").push().setValue(details);
+                DatabaseReference fRef= ref.getReference().getRoot().child("Posts").push();
+                fRef.setValue(details);
+
+                sRef.child("images/"+fRef.getKey()+"/picture.jpg").putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(getActivity(),"Image Uploaded",Toast.LENGTH_LONG).show();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(),"Image reloaded",Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
 
             }
         });
+    }
+
+    private File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= Environment.getExternalStorageDirectory();
+        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
+        if(!tempDir.exists())
+        {
+            tempDir.mkdirs();
+        }
+        return File.createTempFile(part, ext, tempDir);
+    }
+
+    public void grabImage(ImageView imageView)
+    {
+        this.getActivity().getContentResolver().notifyChange(mImageUri, null);
+        ContentResolver cr = this.getActivity().getContentResolver();
+        Bitmap bitmap;
+        try
+        {
+            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+            imageView.setImageBitmap(bitmap);
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getActivity(), "Failed to load", Toast.LENGTH_SHORT).show();
+            //Log.d(TAG, "Failed to load", e);
+        }
     }
 
     public void requestPermissions(){
@@ -189,12 +273,27 @@ public class SubmitReport extends Fragment {
         }
     }
 
+    private void signInAnonymously() {
+        fAuth.signInAnonymously().addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                Log.d("SIGNIN","Success");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("SIGNIN","Fail");
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        android.graphics.Bitmap bp = (Bitmap) data.getExtras().get("data");
-        mImageView.setImageBitmap(bp);
+        //android.graphics.Bitmap bp = (Bitmap) data.getExtras().get("data");
+        grabImage(mImageView);
+        //mImageView.setImageBitmap(bp);
     }
 
 

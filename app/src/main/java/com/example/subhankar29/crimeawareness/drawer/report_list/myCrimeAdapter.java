@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.subhankar29.crimeawareness.PostDetails;
@@ -30,7 +32,8 @@ public class myCrimeAdapter extends RecyclerView.Adapter<myCrimeAdapter.MyOwnHol
     @Override
     public void onBindViewHolder(MyOwnHolder holder, int position) {
         PostDetails p = postDetailsList.get(position);
-        holder.subject.setText("Hello");
+        holder.subject.setText(p.getSubject());
+        holder.desc.setText(p.getDesc());
 
     }
 
@@ -47,10 +50,15 @@ public class myCrimeAdapter extends RecyclerView.Adapter<myCrimeAdapter.MyOwnHol
     public class MyOwnHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView subject;
+        ImageView imageView;
+        TextView desc;
+
         public MyOwnHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
-            //subject = (TextView) cardView.findViewById(R.id.info_text);
+            cardView = (CardView)itemView.findViewById(R.id.card_view);
+            subject = (TextView) cardView.findViewById(R.id.subject);
+            imageView = (ImageView) cardView.findViewById(R.id.cardImage);
+            desc = (TextView) cardView.findViewById(R.id.description);
         }
     }
 }

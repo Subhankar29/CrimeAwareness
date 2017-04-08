@@ -13,6 +13,12 @@ import android.view.ViewGroup;
 
 import com.example.subhankar29.crimeawareness.PostDetails;
 import com.example.subhankar29.crimeawareness.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +49,9 @@ public class ReportListFragment extends Fragment {
     private RecyclerView reportListRecyclerView;
     private RecyclerView.Adapter rAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
+
+    private FirebaseStorage firebaseStorage;
+    private FirebaseDatabase firebaseDatabase;
 
     private List<PostDetails> postDetailsList;
 
@@ -75,6 +84,9 @@ public class ReportListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
     }
 
     @Override
@@ -112,6 +124,27 @@ public class ReportListFragment extends Fragment {
         PostDetails e = new PostDetails();
         e.setSubject("Hello");
         postDetailsList.add(e);
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+
+        firebaseDatabase.getReference().getRoot().child("Posts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot d:dataSnapshot.getChildren()){
+                    //Log.d("CDATABASE",d.getKey()+"\n"+d.getValue());
+                    PostDetails p = d.getValue(PostDetails.class);
+                    postDetailsList.add(p);
+                }
+                rAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         rAdapter.notifyDataSetChanged();
         Log.d("CARDVIEW","DONE.");

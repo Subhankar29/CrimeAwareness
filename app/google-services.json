@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "912504170636-knjo73annliqaldrppeou5sp1143f27l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.subhankar29.crimeawareness",
+            "certificate_hash": "f923e8d605d1fa46492c25dc507d2f1644d340b7"
+          }
+        },
+        {
+          "client_id": "912504170636-q3fpiqd7l9c98ekieod6498g7l494hg6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.subhankar29.crimeawareness",
+            "certificate_hash": "025178b10eb0141fd7ff9e4e38901fae68626c4d"
+          }
+        },
+        {
           "client_id": "912504170636-jtcnr2utch064b1281g8mlnfo4m83gga.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
