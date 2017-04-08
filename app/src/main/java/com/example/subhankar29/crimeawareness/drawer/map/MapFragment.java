@@ -156,7 +156,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap = googleMap;
 
-
+//
         wordList[0]="ROBBERY";
         wordList[1]="EVE TEASING";
         wordList[2]="ASSAULT";
