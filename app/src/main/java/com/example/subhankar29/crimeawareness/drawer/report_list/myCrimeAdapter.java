@@ -1,5 +1,7 @@
 package com.example.subhankar29.crimeawareness.drawer.report_list;
 
+import android.graphics.Bitmap;
+import android.location.Location;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +23,8 @@ import java.util.List;
 
 public class myCrimeAdapter extends RecyclerView.Adapter<myCrimeAdapter.MyOwnHolder> {
     private  List<PostDetails> postDetailsList;
+    private  List<Bitmap> bitmaps;
+
 
     @Override
     public MyOwnHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,6 +36,14 @@ public class myCrimeAdapter extends RecyclerView.Adapter<myCrimeAdapter.MyOwnHol
     @Override
     public void onBindViewHolder(MyOwnHolder holder, int position) {
         PostDetails p = postDetailsList.get(position);
+        lStats();
+        try{
+            Bitmap b = bitmaps.get(position);
+            holder.imageView.setImageBitmap(b);
+        }catch (Exception e){
+            Log.d("IMAGE","Didn't/Couldn't download.");
+        }
+
         holder.subject.setText(p.getSubject());
         holder.desc.setText(p.getDesc());
 
@@ -45,6 +57,15 @@ public class myCrimeAdapter extends RecyclerView.Adapter<myCrimeAdapter.MyOwnHol
     @Override
     public int getItemCount() {
         return postDetailsList.size();
+    }
+
+    public void setImageViewList(List<Bitmap> bitmaps){
+        this.bitmaps = bitmaps;
+    }
+
+    public void lStats(){
+        Log.d("IMAGELIST",""+(bitmaps==null));
+        Log.d("IMAGELIST",""+(bitmaps.size()));
     }
 
     public class MyOwnHolder extends RecyclerView.ViewHolder {

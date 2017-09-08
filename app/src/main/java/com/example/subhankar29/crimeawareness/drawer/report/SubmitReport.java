@@ -31,6 +31,7 @@ import com.example.subhankar29.crimeawareness.R;
 import com.example.subhankar29.crimeawareness.ULocation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +41,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -71,6 +74,7 @@ public class SubmitReport extends Fragment {
     Button timeButton;
 
     private Uri mImageUri;
+    private File thumb;
 
     private static final int APP_PERMS = 1097;
 
@@ -112,6 +116,7 @@ public class SubmitReport extends Fragment {
         }
 
         //Should be handled in MainScreenActivity and not a fragment
+        FirebaseApp.initializeApp(getActivity());
         fAuth= FirebaseAuth.getInstance();
         if(fAuth.getCurrentUser()==null)signInAnonymously();
         sRef = FirebaseStorage.getInstance().getReference();
@@ -138,15 +143,15 @@ public class SubmitReport extends Fragment {
         descText = (EditText) getView().findViewById(R.id.description);
         postButton = (Button) getView().findViewById(R.id.postButton);
         location = (Button) getView().findViewById(R.id.ButtonLocation);
-        timeButton = (Button) getView().findViewById(R.id.ButtonTime);
+        //timeButton = (Button) getView().findViewById(R.id.ButtonTime);
 
-        timeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-                time.setText(currentDateTimeString);
-            }
-        });
+//        timeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+//                time.setText(currentDateTimeString);
+//            }
+//        });
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,22 +182,24 @@ public class SubmitReport extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File photo=null;
+//                File photo=null;
                 try
                 {
-                    // place where to store camera taken picture
-                    photo = SubmitReport.this.createTemporaryFile("picture", ".jpg");
-                    photo.delete();
+//                    // place where to store camera taken picture
+//                    photo = SubmitReport.this.createTemporaryFile("picture_up", ".jpg");
+                    thumb = SubmitReport.this.createTemporaryFile("pthumb_up", ".jpg");
+//                    photo.delete();
+                    thumb.delete();
                 }
                 catch(Exception e)
                 {
-                    Log.v("TEMPFILE", "Can't create file to take picture!");
-                    e.printStackTrace();
-                    Toast.makeText(getActivity(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_LONG);
-
+//                    Log.v("TEMPFILE", "Can't create file to take picture!");
+//                    e.printStackTrace();
+//                    Toast.makeText(getActivity(), "Please check SD card! Image shot is impossible!", Toast.LENGTH_LONG);
+//
                 }
-                mImageUri = Uri.fromFile(photo);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+//                mImageUri = Uri.fromFile(photo);
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
                 startActivityForResult(intent,0);
             }
         });
@@ -211,15 +218,26 @@ public class SubmitReport extends Fragment {
                 DatabaseReference fRef= ref.getReference().getRoot().child("Posts").push();
                 fRef.setValue(details);
 
+//                sRef.child("images/"+fRef.getKey()+"/picture.jpg").putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        Toast.makeText(getActivity(),"Image Uploaded",Toast.LENGTH_LONG).show();
+//
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getActivity(),"Image reloaded",Toast.LENGTH_LONG).show();
+//                    }
+//                });
                 final ProgressDialog pd = new ProgressDialog(getActivity());
                 pd.setMessage("UPLOADING");
                 pd.show();
-
-                sRef.child("images/"+fRef.getKey()+"/picture.jpg").putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                sRef.child("images/"+fRef.getKey()+"/picture.jpg").putFile(Uri.fromFile(thumb)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         pd.dismiss();
-                        Toast.makeText(getActivity(),"Report Uploaded",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),"Image Uploaded",Toast.LENGTH_LONG).show();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -254,6 +272,17 @@ public class SubmitReport extends Fragment {
         try
         {
             bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+
+            FileOutputStream out = null;
+            try {
+                thumb.delete();
+                out = new FileOutputStream(thumb);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Log.d("COMPRESSION",""+bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,out));
+            out.flush();
+            Log.d("COMPRESSION",""+thumb.length()+" "+thumb.getPath());
             imageView.setImageBitmap(bitmap);
         }
         catch (Exception e)
@@ -314,9 +343,18 @@ public class SubmitReport extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //android.graphics.Bitmap bp = (Bitmap) data.getExtras().get("data");
-        grabImage(mImageView);
-        //mImageView.setImageBitmap(bp);
+        android.graphics.Bitmap bp = (Bitmap) data.getExtras().get("data");
+//        grabImage(mImageView);
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(thumb);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        bp.compress(android.graphics.Bitmap.CompressFormat.PNG,100,out);
+
+        mImageView.setImageBitmap(bp);
     }
 
 

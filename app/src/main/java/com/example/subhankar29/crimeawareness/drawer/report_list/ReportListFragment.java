@@ -1,8 +1,11 @@
 package com.example.subhankar29.crimeawareness.drawer.report_list;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,13 +16,18 @@ import android.view.ViewGroup;
 
 import com.example.subhankar29.crimeawareness.PostDetails;
 import com.example.subhankar29.crimeawareness.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +55,16 @@ public class ReportListFragment extends Fragment {
 
 
     private RecyclerView reportListRecyclerView;
-    private RecyclerView.Adapter rAdapter;
+    private myCrimeAdapter rAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
 
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
 
     private List<PostDetails> postDetailsList;
+
+    private File local;
+    List<Bitmap> bitmaps;
 
     public ReportListFragment() {
         // Required empty public constructor
@@ -121,22 +132,52 @@ public class ReportListFragment extends Fragment {
 
     private void preparePostDetails() {
 
-        PostDetails e = new PostDetails();
-        e.setSubject("Hello");
-        postDetailsList.add(e);
+        //PostDetails e = new PostDetails();
+        //e.setSubject("Hello");
+        //postDetailsList.add(e);
 
         firebaseStorage = FirebaseStorage.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        bitmaps = new ArrayList<>();
 
 
         firebaseDatabase.getReference().getRoot().child("Posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for(DataSnapshot d:dataSnapshot.getChildren()){
                     //Log.d("CDATABASE",d.getKey()+"\n"+d.getValue());
                     PostDetails p = d.getValue(PostDetails.class);
                     postDetailsList.add(p);
+                    try {
+                        local = File.createTempFile("thumb",".jpg");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //local.delete();
+                    Log.d("PATH",firebaseStorage.getReference().getRoot().child("images/"+d.getKey()+"/picture.jpg").getPath());
+                    firebaseStorage.getReference().getRoot().child("images/"+d.getKey()+"/picture.jpg").getFile(local).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap img = BitmapFactory.decodeFile(local.getPath());
+
+                            if(img==null)Log.d("IMAGE","It's not there."+local.length()+local.exists());
+                            bitmaps.add(img);
+                            rAdapter.notifyDataSetChanged();
+                            Log.d("IMAGE","Hello\nHello\nHello\nThe list size is:"+bitmaps.size());
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("IMAGE_DOWNLOAD","fail");
+                            Log.d("IMAGE","Hello\nHello\nHello\nThe list size is:"+bitmaps.size());
+                        }
+                    });
                 }
+                rAdapter.setImageViewList(bitmaps);
+                Log.d("IMAGE","The list size is:"+bitmaps.size());
+                rAdapter.lStats();
                 rAdapter.notifyDataSetChanged();
             }
 
@@ -146,7 +187,9 @@ public class ReportListFragment extends Fragment {
             }
         });
 
-        rAdapter.notifyDataSetChanged();
+
+
+        //rAdapter.notifyDataSetChanged();
         Log.d("CARDVIEW","DONE.");
         Log.d("CARDVIEW","DONE.");
         Log.d("CARDVIEW","DONE.");
